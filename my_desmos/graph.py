@@ -28,23 +28,36 @@
 
 
 # graph.py
+import matplotlib
+matplotlib.use('Agg')  # For running without GUI
 import matplotlib.pyplot as plt
 import numpy as np
-import math
 import io
+import base64
+import math
 
-def create_plot(expression):
-    x = np.arange(-4.0, 4.0, 0.01)
+def plot_graph(equation, x_min, x_max):
+    x = np.linspace(x_min, x_max, 500)
+
     try:
-        y = eval(expression)
+        # Safely evaluate equation
+        y = [eval(equation, {"x": val, "math": math,  "np": np,"__builtins__": {}}) for val in x]
     except Exception as e:
-        raise ValueError(f"Invalid expression: {e}")
+        return None
 
     fig, ax = plt.subplots()
-    ax.plot(x, y)
+    ax.plot(x, y, label=equation)
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.legend()
     ax.grid(True)
 
+    # Save to buffer
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     buf.seek(0)
-    return buf
+    img_base64 = base64.b64encode(buf.read()).decode('utf-8')
+    plt.close(fig)
+
+    return f"data:image/png;base64,{img_base64}"
+
