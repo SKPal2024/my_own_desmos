@@ -23,3 +23,5 @@ A web-based graph plotting application built with Flask and Matplotlib that allo
 
 <img width="2880" height="1704" alt="{3F924328-5AB0-4481-89A9-24D668271C03}" src="https://github.com/user-attachments/assets/2eaaf519-4a29-42e9-bca2-03ddbaa881bf" />
 
+How to run
+go to the app.py file location and run python app.py command in terminal
